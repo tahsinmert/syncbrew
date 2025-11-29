@@ -90,6 +90,16 @@
 	<!-- Mission Section -->
 	<section class="mission-section">
 		<div class="mission-container">
+			<div class="mission-image">
+				<video
+					src="/coffee-ritual.mp4"
+					autoplay
+					loop
+					muted
+					playsinline
+					class="mission-video"
+				></video>
+			</div>
 			<div class="mission-content">
 				<h2 class="mission-title">OUR MISSION</h2>
 				<p class="mission-text">
@@ -102,16 +112,6 @@
 					We source directly from smallholder farms, ensuring fair compensation and sustainable 
 					practices. Every bean tells a story, and we're honored to share these stories with you.
 				</p>
-			</div>
-			<div class="mission-image">
-				<video
-					src="/coffee-ritual.mp4"
-					autoplay
-					loop
-					muted
-					playsinline
-					class="mission-video"
-				></video>
 			</div>
 		</div>
 	</section>
@@ -157,14 +157,14 @@
 		position: relative;
 		width: 100%;
 		background: #171717;
-		min-height: 100vh;
+		min-height: 100dvh;
 	}
 
 	/* Hero Section */
 	.hero-section {
 		position: relative;
 		width: 100%;
-		height: 100vh;
+		height: 100dvh;
 		overflow: hidden;
 		display: flex;
 		align-items: center;
@@ -229,17 +229,38 @@
 	.mission-section {
 		position: relative;
 		width: 100%;
-		padding: 8rem 2rem;
+		padding: 4rem 1rem;
 		background: #171717;
+	}
+
+	@media (min-width: 768px) {
+		.mission-section {
+			padding: 6rem 2rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.mission-section {
+			padding: 8rem 2rem;
+		}
 	}
 
 	.mission-container {
 		max-width: 1400px;
 		margin: 0 auto;
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 4rem;
-		align-items: center;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		align-items: stretch;
+	}
+
+	@media (min-width: 1024px) {
+		.mission-container {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 4rem;
+			align-items: center;
+		}
 	}
 
 	.mission-content {
@@ -284,8 +305,20 @@
 	.values-section {
 		position: relative;
 		width: 100%;
-		padding: 8rem 2rem;
+		padding: 4rem 1rem;
 		background: #0f0f0f;
+	}
+
+	@media (min-width: 768px) {
+		.values-section {
+			padding: 6rem 2rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.values-section {
+			padding: 8rem 2rem;
+		}
 	}
 
 	.values-container {
@@ -306,8 +339,15 @@
 
 	.values-grid {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 3rem;
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+
+	@media (min-width: 768px) {
+		.values-grid {
+			grid-template-columns: repeat(2, 1fr);
+			gap: 3rem;
+		}
 	}
 
 	.value-card {
@@ -346,11 +386,6 @@
 
 	/* Responsive */
 	@media (max-width: 1024px) {
-		.mission-container {
-			grid-template-columns: 1fr;
-			gap: 3rem;
-		}
-
 		.values-grid {
 			grid-template-columns: 1fr;
 			gap: 2rem;

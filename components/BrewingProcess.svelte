@@ -112,14 +112,14 @@
 	.brewing-section {
 		position: relative;
 		width: 100%;
-		min-height: 100vh;
+		min-height: 100dvh;
 		overflow: hidden;
 	}
 
 	.split-container {
 		display: flex;
 		width: 100%;
-		height: 100vh;
+		height: 100dvh;
 	}
 
 	/* Left Side: The Data */
@@ -223,7 +223,7 @@
 		.split-container {
 			flex-direction: column;
 			height: auto;
-			min-height: 100vh;
+			min-height: 100dvh;
 		}
 
 		.data-side {

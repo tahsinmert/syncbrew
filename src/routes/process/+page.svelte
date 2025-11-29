@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { gsap } from 'gsap';
 	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+	import SEO from '../../lib/components/SEO.svelte';
 	import Navbar from '../../../components/Navbar.svelte';
 	import Footer from '../../../components/Footer.svelte';
 
@@ -295,6 +296,11 @@
 	});
 </script>
 
+<SEO 
+	title="The Science of Brewing"
+	description="Discover the alchemy behind the perfect espresso. Roast, Grind, Bloom, Extract."
+/>
+
 <Navbar />
 
 <div class="page-container">
@@ -399,7 +405,19 @@
 	<section class="grind-section" bind:this={grindingSection}>
 		<div class="grind-container max-w-7xl" bind:this={grindSectionContainer}>
 			<div class="grind-grid">
-				<!-- Text Left -->
+				<!-- Video First on Mobile -->
+				<div class="grind-video-container">
+					<video
+						bind:this={grindVideo}
+						src="/ground-texture.mp4"
+						autoplay
+						loop
+						muted
+						playsinline
+						class="grind-video"
+					></video>
+				</div>
+				<!-- Text Second on Mobile -->
 				<div class="grind-text-content" bind:this={grindTextContainer}>
 					<h2 class="grind-header">UNIFORMITY</h2>
 					<p class="grind-subhead">Precision Burr Geometry.</p>
@@ -417,18 +435,6 @@
 							<span class="data-value-amber">Sweetness</span>
 						</div>
 					</div>
-				</div>
-				<!-- Video Right -->
-				<div class="grind-video-container">
-					<video
-						bind:this={grindVideo}
-						src="/ground-texture.mp4"
-						autoplay
-						loop
-						muted
-						playsinline
-						class="grind-video"
-					></video>
 				</div>
 			</div>
 		</div>
@@ -517,7 +523,7 @@
 		position: relative;
 		width: 100%;
 		background: #171717;
-		min-height: 100vh;
+		min-height: 100dvh;
 	}
 
 	/* Process Hero Section */
@@ -615,12 +621,18 @@
 	.step-section {
 		position: relative;
 		width: 100%;
-		min-height: 100vh;
+		min-height: 100dvh;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: 4rem 2rem;
+		padding: 3rem 1rem;
 		background: #171717;
+	}
+
+	@media (min-width: 768px) {
+		.step-section {
+			padding: 4rem 2rem;
+		}
 	}
 
 	.step-container {
@@ -736,12 +748,24 @@
 	.grind-section {
 		position: relative;
 		width: 100%;
-		min-height: 100vh;
+		min-height: 100dvh;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: 6rem 2rem;
+		padding: 3rem 1rem;
 		background: #171717;
+	}
+
+	@media (min-width: 768px) {
+		.grind-section {
+			padding: 4rem 2rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.grind-section {
+			padding: 6rem 2rem;
+		}
 	}
 
 	.grind-container {
@@ -751,10 +775,28 @@
 	}
 
 	.grind-grid {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 4rem;
-		align-items: center;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		align-items: stretch;
+	}
+
+	@media (min-width: 1024px) {
+		.grind-grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 4rem;
+			align-items: center;
+		}
+
+		/* Reorder on desktop: text first, video second */
+		.grind-text-content {
+			order: 1;
+		}
+
+		.grind-video-container {
+			order: 2;
+		}
 	}
 
 	.grind-text-content {
@@ -936,9 +978,16 @@
 	/* Extraction Section */
 	.technical-data-grid {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 2rem;
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
 		margin-top: 2rem;
+	}
+
+	@media (min-width: 768px) {
+		.technical-data-grid {
+			grid-template-columns: repeat(2, 1fr);
+			gap: 2rem;
+		}
 	}
 
 	.data-card {
@@ -990,10 +1039,6 @@
 		.step-container {
 			grid-template-columns: 80px 1fr;
 			gap: 3rem;
-		}
-
-		.technical-data-grid {
-			grid-template-columns: 1fr;
 		}
 
 		.grind-grid {

@@ -35,7 +35,7 @@
 
 			// Animate each particle
 			gsap.to(particle, {
-				y: '+=100vh',
+				y: '+=100dvh',
 				x: `+=${(Math.random() - 0.5) * 200}px`,
 				duration: 10 / speed,
 				repeat: -1,

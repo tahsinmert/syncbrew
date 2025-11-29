@@ -2,9 +2,11 @@
 	import { onMount } from 'svelte';
 	import PageTransition from '../lib/components/PageTransition.svelte';
 	import Preloader from '../lib/components/Preloader.svelte';
+	import CookieConsent from '../lib/components/CookieConsent.svelte';
 	import { preloaderComplete } from '../lib/stores.js';
 	import { isTransitioning } from '../stores/router';
 	import { initSmoothScroll } from '../lib/utils/smoothScroll';
+	import '../app.css';
 
 	let contentVisible = false;
 
@@ -50,6 +52,9 @@
 		<slot />
 	</div>
 </div>
+
+<!-- Cookie Consent Banner -->
+<CookieConsent />
 
 <style>
 	.main-content {

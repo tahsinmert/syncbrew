@@ -82,7 +82,7 @@
 
 	.video-container {
 		width: 100%;
-		height: 70vh;
+		height: 70dvh;
 		position: relative;
 		overflow: hidden;
 	}
@@ -123,7 +123,7 @@
 		}
 
 		.video-container {
-			height: 65vh;
+			height: 65dvh;
 		}
 	}
 
@@ -135,7 +135,7 @@
 		}
 
 		.video-container {
-			height: 60vh;
+			height: 60dvh;
 		}
 
 		.subtitle-text {
@@ -152,7 +152,7 @@
 		}
 
 		.video-container {
-			height: 55vh;
+			height: 55dvh;
 		}
 
 		.subtitle-text {

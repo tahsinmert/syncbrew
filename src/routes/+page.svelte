@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { gsap } from 'gsap';
 	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+	import SEO from '../lib/components/SEO.svelte';
 	import Navbar from '../../components/Navbar.svelte';
 	import Hero from '../../Hero.svelte';
 	import ProductShowcase from '../../ProductShowcase.svelte';
@@ -186,6 +187,11 @@
 	});
 </script>
 
+<SEO 
+	title="Taste the Future"
+	description="Experience the fusion of technology and organic coffee. SyncBrew offers premium ethically sourced beans and precision brewing equipment."
+/>
+
 <div class="app-container" bind:this={appContainer}>
 	<VideoBackground />
 	<AnimatedGradient />
@@ -212,7 +218,7 @@
 	.app-container {
 		position: relative;
 		width: 100%;
-		min-height: 100vh;
+		min-height: 100dvh;
 	}
 
 	.noise-texture {

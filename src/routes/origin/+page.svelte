@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { gsap } from 'gsap';
 	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+	import SEO from '../../lib/components/SEO.svelte';
 	import Navbar from '../../../components/Navbar.svelte';
 	import Footer from '../../../components/Footer.svelte';
 	import { navigate } from '../../stores/router';
@@ -296,6 +297,11 @@
 	});
 </script>
 
+<SEO 
+	title="Our Origin & Farmers"
+	description="From the volcanic soils of Ethiopia to your cup. Meet the hands that craft our legacy."
+/>
+
 <Navbar />
 
 <div class="page-container">
@@ -424,14 +430,14 @@
 		position: relative;
 		width: 100%;
 		background: #171717; /* bg-neutral-900 equivalent */
-		min-height: 100vh;
+		min-height: 100dvh;
 	}
 
 	/* Hero Section */
 	.hero-section {
 		position: relative;
 		width: 100vw;
-		height: 100vh;
+		height: 100dvh;
 		overflow: hidden;
 		display: flex;
 		align-items: center;
@@ -513,11 +519,23 @@
 		position: relative;
 		width: 100%;
 		background: #171717;
-		padding: 8rem 2rem;
-		min-height: 100vh;
+		padding: 4rem 1rem;
+		min-height: 100dvh;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+
+	@media (min-width: 768px) {
+		.timeline-section {
+			padding: 6rem 2rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.timeline-section {
+			padding: 8rem 2rem;
+		}
 	}
 
 	.timeline-container {
@@ -659,11 +677,23 @@
 		position: relative;
 		width: 100%;
 		background: #171717;
-		padding: 8rem 2rem;
+		padding: 4rem 1rem;
 		min-height: 80vh;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+
+	@media (min-width: 768px) {
+		.farmers-section {
+			padding: 6rem 2rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.farmers-section {
+			padding: 8rem 2rem;
+		}
 	}
 
 	.farmers-container {
@@ -684,8 +714,22 @@
 
 	.farmers-grid {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 3rem;
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+
+	@media (min-width: 768px) {
+		.farmers-grid {
+			grid-template-columns: repeat(2, 1fr);
+			gap: 2rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.farmers-grid {
+			grid-template-columns: repeat(3, 1fr);
+			gap: 3rem;
+		}
 	}
 
 	.farmer-card {

@@ -1,0 +1,48 @@
+/* Global Focus Styles - Custom Amber/Gold Focus Ring */
+
+/* Remove default outline and add custom focus-visible styles */
+:focus-visible {
+	outline: none;
+	border-color: rgb(245, 158, 11); /* amber-500 */
+	box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.5);
+}
+
+/* Buttons - Custom focus ring */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+	outline: none;
+	border-color: rgb(245, 158, 11); /* amber-500 */
+	box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.5);
+	transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+/* Links - Custom focus ring */
+a:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.5);
+	border-radius: 2px;
+}
+
+/* Inputs and form elements - Custom focus ring */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+	outline: none;
+	border-color: rgb(245, 158, 11); /* amber-500 */
+	box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.5);
+}
+
+/* Custom Text Selection - Amber background with black text */
+::selection {
+	background-color: rgb(245, 158, 11); /* amber-500 */
+	color: rgb(0, 0, 0); /* black */
+}
+
+::-moz-selection {
+	background-color: rgb(245, 158, 11); /* amber-500 */
+	color: rgb(0, 0, 0); /* black */
+}
+

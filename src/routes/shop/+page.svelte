@@ -3,6 +3,7 @@
 	import { fade } from 'svelte/transition';
 	import { gsap } from 'gsap';
 	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+	import SEO from '../../lib/components/SEO.svelte';
 	import Navbar from '../../../components/Navbar.svelte';
 	import Footer from '../../../components/Footer.svelte';
 	import Subscription from '../../../components/Subscription.svelte';
@@ -317,7 +318,107 @@
 			ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 		};
 	});
+
+	// Generate JSON-LD Structured Data for Rich Snippets
+	$: baseUrl = typeof window !== 'undefined' 
+		? window.location.origin 
+		: 'https://syncbrew.com';
+
+	$: structuredData = {
+		'@context': 'https://schema.org',
+		'@graph': [
+			// Organization Schema
+			{
+				'@type': 'Organization',
+				'@id': `${baseUrl}/#organization`,
+				'name': 'SyncBrew',
+				'url': baseUrl,
+				'logo': `${baseUrl}/syncbrew-logo.png`,
+				'description': 'Premium coffee beans, brewing equipment, and merchandise. Taste the Future.',
+				'contactPoint': {
+					'@type': 'ContactPoint',
+					'email': 'hello@syncbrew.com',
+					'telephone': '+1-234-567-890',
+					'contactType': 'Customer Service'
+				},
+				'address': {
+					'@type': 'PostalAddress',
+					'streetAddress': '123 Coffee Street',
+					'addressLocality': 'San Francisco',
+					'addressRegion': 'CA',
+					'postalCode': '94102',
+					'addressCountry': 'US'
+				},
+				'sameAs': []
+			},
+			// ItemList Schema with Products
+			{
+				'@type': 'ItemList',
+				'@id': `${baseUrl}/shop#itemlist`,
+				'name': 'SyncBrew Shop - Premium Coffee Products',
+				'description': 'Shop premium coffee beans, brewing equipment, and merchandise',
+				'itemListElement': products.map((product, index) => {
+					// Extract numeric price from string (e.g., "$24.00" -> "24.00")
+					const priceMatch = product.price.match(/\$?([\d.]+)/);
+					const numericPrice = priceMatch ? priceMatch[1] : '0.00';
+					
+					// Generate description based on category
+					let description = '';
+					if (product.category === 'beans') {
+						description = `Premium ${product.name} whole bean coffee. Fresh roasted, single origin specialty coffee.`;
+					} else if (product.category === 'equipment') {
+						description = `${product.name} - Professional coffee brewing equipment for the perfect cup.`;
+					} else {
+						description = `${product.name} - Official SyncBrew merchandise.`;
+					}
+
+					return {
+						'@type': 'ListItem',
+						'position': index + 1,
+						'item': {
+							'@type': 'Product',
+							'@id': `${baseUrl}/shop#product-${product.id}`,
+							'name': product.name,
+							'image': product.image,
+							'description': description,
+							'category': product.category === 'beans' 
+								? 'Coffee Beans' 
+								: product.category === 'equipment' 
+									? 'Coffee Equipment' 
+									: 'Merchandise',
+							'offers': {
+								'@type': 'Offer',
+								'price': numericPrice,
+								'priceCurrency': 'USD',
+								'availability': 'https://schema.org/InStock',
+								'url': `${baseUrl}/shop`,
+								'seller': {
+									'@id': `${baseUrl}/#organization`
+								}
+							},
+							'brand': {
+								'@id': `${baseUrl}/#organization`
+							}
+						}
+					};
+				})
+			}
+		]
+	};
+
+	$: structuredDataJson = JSON.stringify(structuredData);
 </script>
+
+<SEO 
+	title="Shop Premium Beans & Gear"
+	description="Order fresh roasted coffee beans, drippers, and barista tools online. Free shipping on subscriptions."
+/>
+
+<svelte:head>
+	<script type="application/ld+json">
+		{@html structuredDataJson}
+	</script>
+</svelte:head>
 
 <Navbar />
 
@@ -429,14 +530,20 @@
 		position: relative;
 		width: 100%;
 		background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-		min-height: 100vh;
+		min-height: 100dvh;
 	}
 
 	/* Shop Header */
 	.shop-header {
-		padding: 120px 40px 60px;
+		padding: 100px 24px 40px;
 		text-align: center;
 		background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+	}
+
+	@media (min-width: 768px) {
+		.shop-header {
+			padding: 120px 40px 60px;
+		}
 	}
 
 	.shop-title {
@@ -490,16 +597,36 @@
 
 	/* Products Section */
 	.products-section {
-		padding: 40px;
+		padding: 20px;
 		background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+	}
+
+	@media (min-width: 768px) {
+		.products-section {
+			padding: 40px;
+		}
 	}
 
 	.products-grid {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 24px;
+		grid-template-columns: 1fr;
+		gap: 16px;
 		max-width: 1400px;
 		margin: 0 auto;
+	}
+
+	@media (min-width: 768px) {
+		.products-grid {
+			grid-template-columns: repeat(2, 1fr);
+			gap: 20px;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.products-grid {
+			grid-template-columns: repeat(3, 1fr);
+			gap: 24px;
+		}
 	}
 
 	.product-card {
@@ -655,8 +782,20 @@
 
 	/* Subscription Section */
 	.subscription-section {
-		padding: 80px 40px;
+		padding: 40px 24px;
 		background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+	}
+
+	@media (min-width: 768px) {
+		.subscription-section {
+			padding: 60px 40px;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.subscription-section {
+			padding: 80px 40px;
+		}
 	}
 
 	.subscription-wrapper {
@@ -718,12 +857,6 @@
 
 
 	/* Responsive Design */
-	@media (max-width: 1024px) {
-		.products-grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
-
 	@media (max-width: 768px) {
 		.shop-header {
 			padding: 100px 20px 40px;
@@ -731,11 +864,6 @@
 
 		.products-section {
 			padding: 20px;
-		}
-
-		.products-grid {
-			grid-template-columns: repeat(2, 1fr);
-			gap: 16px;
 		}
 
 		.product-card {
@@ -775,9 +903,7 @@
 	}
 
 	@media (max-width: 480px) {
-		.products-grid {
-			grid-template-columns: 1fr;
-		}
+		/* Already 1 column by default */
 
 		.product-card {
 			min-height: 300px;

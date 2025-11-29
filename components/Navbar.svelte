@@ -65,7 +65,7 @@
 		</a>
 
 		<!-- Center: Navigation Links (Desktop) -->
-		<ul class="nav-links">
+		<ul class="nav-links hidden md:flex">
 			{#each navLinks as link}
 				<li>
 					<a
@@ -99,9 +99,9 @@
 				{/if}
 			</a>
 			<a href="/reservation" class="book-table-btn" use:magneticButton data-sveltekit-preload-data="hover" on:click={(e) => { e.preventDefault(); closeMobileMenu(); navigate('/reservation'); }}>Book Table</a>
-			<!-- Mobile Menu Toggle -->
+			<!-- Mobile Menu Toggle (Hamburger) -->
 			<button
-				class="mobile-menu-toggle"
+				class="mobile-menu-toggle block md:hidden"
 				class:active={mobileMenuOpen}
 				on:click={toggleMobileMenu}
 				aria-label="Toggle menu"
@@ -115,8 +115,19 @@
 
 	<!-- Mobile Overlay Menu -->
 	{#if mobileMenuOpen}
-		<div class="mobile-overlay" on:click={closeMobileMenu}>
+		<div class="mobile-overlay" on:click={closeMobileMenu} role="dialog" aria-modal="true" aria-label="Mobile menu">
 			<div class="mobile-menu" on:click|stopPropagation>
+				<!-- Close Button (X) -->
+				<button
+					class="mobile-menu-close"
+					on:click={closeMobileMenu}
+					aria-label="Close menu"
+				>
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<line x1="18" y1="6" x2="6" y2="18"></line>
+						<line x1="6" y1="6" x2="18" y2="18"></line>
+					</svg>
+				</button>
 				<ul class="mobile-nav-links">
 					{#each navLinks as link, index}
 						<li
@@ -184,7 +195,7 @@
 	}
 
 	.brand-logo-image {
-		height: 40px;
+		height: clamp(28px, 4vw, 40px);
 		width: auto;
 		filter: brightness(0) invert(1);
 		transition: opacity 0.3s ease;
@@ -196,7 +207,7 @@
 
 	.brand-logo-text {
 		font-family: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
-		font-size: 1.5rem;
+		font-size: clamp(1rem, 2.5vw, 1.5rem);
 		font-weight: 700;
 		color: #ffffff;
 		letter-spacing: 0.1em;
@@ -215,12 +226,22 @@
 
 	/* Desktop Navigation Links */
 	.nav-links {
-		display: flex;
 		align-items: center;
 		gap: 2.5rem;
 		list-style: none;
 		margin: 0;
 		padding: 0;
+	}
+
+	/* Hide on mobile, show on desktop (md and up) - Tailwind: hidden md:flex */
+	.nav-links.hidden {
+		display: none;
+	}
+
+	@media (min-width: 768px) {
+		.nav-links.hidden {
+			display: flex;
+		}
 	}
 
 	.nav-link {
@@ -336,9 +357,8 @@
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 	}
 
-	/* Mobile Menu Toggle */
+	/* Mobile Menu Toggle (Hamburger) */
 	.mobile-menu-toggle {
-		display: none;
 		flex-direction: column;
 		justify-content: space-between;
 		width: 24px;
@@ -348,6 +368,17 @@
 		cursor: pointer;
 		padding: 0;
 		z-index: 100;
+	}
+
+	/* Show on mobile, hide on desktop */
+	.mobile-menu-toggle.block {
+		display: flex;
+	}
+
+	@media (min-width: 768px) {
+		.mobile-menu-toggle.md\:hidden {
+			display: none;
+		}
 	}
 
 	.mobile-menu-toggle span {
@@ -371,11 +402,15 @@
 		transform: rotate(-45deg) translate(6px, -6px);
 	}
 
-	/* Mobile Overlay */
+	/* Mobile Overlay - Full Screen with bg-black/95 */
 	.mobile-overlay {
 		position: fixed;
 		inset: 0;
-		background: rgba(0, 0, 0, 0.95);
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.95); /* bg-black/95 equivalent */
 		backdrop-filter: blur(20px);
 		-webkit-backdrop-filter: blur(20px);
 		z-index: 99;
@@ -383,11 +418,22 @@
 		align-items: center;
 		justify-content: center;
 		animation: fadeIn 0.3s ease;
+		/* Safe area support for iPhone notch */
+		padding-top: max(env(safe-area-inset-top), 0px);
+		padding-bottom: max(env(safe-area-inset-bottom), 0px);
+		padding-left: max(env(safe-area-inset-left), 0px);
+		padding-right: max(env(safe-area-inset-right), 0px);
 	}
 
 	.mobile-menu {
 		width: 100%;
+		height: 100%;
 		padding: 2rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		position: relative;
 	}
 
 	.mobile-nav-links {
@@ -408,7 +454,7 @@
 
 	.mobile-nav-link {
 		font-family: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
-		font-size: 2.5rem;
+		font-size: 3rem; /* text-5xl: 3rem */
 		font-weight: 700;
 		color: #ffffff;
 		text-decoration: none;
@@ -417,6 +463,37 @@
 		transition: all 0.3s ease;
 		display: block;
 		text-align: center;
+		line-height: 1.2;
+	}
+
+	/* Mobile Menu Close Button */
+	.mobile-menu-close {
+		position: absolute;
+		top: 2rem;
+		right: 2rem;
+		background: transparent;
+		border: none;
+		color: #ffffff;
+		cursor: pointer;
+		padding: 0.75rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.3s ease;
+		z-index: 101;
+		/* Safe area support */
+		top: calc(2rem + env(safe-area-inset-top));
+		right: calc(2rem + env(safe-area-inset-right));
+	}
+
+	.mobile-menu-close:hover {
+		color: #f59e0b;
+		transform: rotate(90deg);
+	}
+
+	.mobile-menu-close svg {
+		width: 24px;
+		height: 24px;
 	}
 
 	.mobile-nav-link:hover {
@@ -464,22 +541,21 @@
 	@media (max-width: 768px) {
 		.navbar {
 			padding: 1rem 1.5rem;
+			/* Safe area support for navbar */
+			padding-top: calc(1rem + env(safe-area-inset-top));
+			padding-left: calc(1.5rem + env(safe-area-inset-left));
+			padding-right: calc(1.5rem + env(safe-area-inset-right));
 		}
 
 		.navbar.scrolled {
 			padding: 0.875rem 1.5rem;
-		}
-
-		.nav-links {
-			display: none;
+			padding-top: calc(0.875rem + env(safe-area-inset-top));
+			padding-left: calc(1.5rem + env(safe-area-inset-left));
+			padding-right: calc(1.5rem + env(safe-area-inset-right));
 		}
 
 		.book-table-btn {
 			display: none;
-		}
-
-		.mobile-menu-toggle {
-			display: flex;
 		}
 
 		.navbar-actions {
@@ -494,6 +570,11 @@
 			width: 18px;
 			height: 18px;
 		}
+
+		.mobile-menu-close {
+			top: calc(1.5rem + env(safe-area-inset-top));
+			right: calc(1.5rem + env(safe-area-inset-right));
+		}
 	}
 
 	@media (max-width: 640px) {
@@ -506,19 +587,24 @@
 		}
 
 		.brand-logo-text {
-			font-size: 1.25rem;
+			font-size: clamp(0.875rem, 3vw, 1.25rem);
 		}
 
 		.brand-logo-image {
-			height: 32px;
+			height: clamp(24px, 3.5vw, 32px);
 		}
 
 		.mobile-nav-link {
-			font-size: 2rem;
+			font-size: clamp(1.75rem, 6vw, 2.5rem);
 		}
 
 		.navbar-actions {
 			gap: 0.5rem;
+		}
+
+		.icon-button svg {
+			width: 16px;
+			height: 16px;
 		}
 	}
 </style>

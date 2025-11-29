@@ -61,7 +61,7 @@
 	.bean-story-section {
 		position: relative;
 		width: 100%;
-		min-height: 100vh;
+		min-height: 100dvh;
 		background: #ffffff; /* Pure white background */
 		overflow: hidden;
 		margin: 0;

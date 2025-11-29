@@ -237,25 +237,29 @@
 	.cart-page {
 		position: relative;
 		width: 100%;
-		min-height: 100vh;
+		min-height: 100dvh;
 		background: #050505;
 		color: #ffffff;
 		overflow-x: hidden;
 	}
 
 	.cart-background {
-		position: fixed;
-		top: 0;
-		right: 0;
-		width: 40%;
-		height: 100vh;
+		position: relative;
+		width: 100%;
+		height: 30vh;
 		z-index: 0;
-		display: none;
+		display: block;
+		margin-bottom: 2rem;
 	}
 
 	@media (min-width: 1024px) {
 		.cart-background {
-			display: block;
+			position: fixed;
+			top: 0;
+			right: 0;
+			width: 40%;
+			height: 100dvh;
+			margin-bottom: 0;
 		}
 	}
 
@@ -284,7 +288,19 @@
 		width: 100%;
 		max-width: 1400px;
 		margin: 0 auto;
-		padding: 140px 40px 80px;
+		padding: 100px 24px 40px;
+	}
+
+	@media (min-width: 768px) {
+		.cart-container {
+			padding: 120px 40px 60px;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.cart-container {
+			padding: 140px 40px 80px;
+		}
 	}
 
 	/* Cart Header */
@@ -648,10 +664,6 @@
 
 	/* Responsive Design */
 	@media (max-width: 1024px) {
-		.cart-container {
-			padding: 120px 24px 60px;
-		}
-
 		.cart-content {
 			grid-template-columns: 1fr;
 		}
@@ -711,15 +723,15 @@
 		}
 
 		.cart-title {
-			font-size: 2rem;
+			font-size: clamp(1.75rem, 5vw, 2.5rem);
 		}
 
 		.item-name {
-			font-size: 1.25rem;
+			font-size: 1.125rem;
 		}
 
 		.item-price {
-			font-size: 1.125rem;
+			font-size: 1rem;
 		}
 
 		.total-value {

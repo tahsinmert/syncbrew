@@ -85,6 +85,16 @@
 	<!-- Direct Trade Section -->
 	<section class="direct-trade-section">
 		<div class="direct-trade-container">
+			<div class="direct-trade-image">
+				<video
+					src="/bean-burlap.mp4"
+					autoplay
+					loop
+					muted
+					playsinline
+					class="section-video"
+				></video>
+			</div>
 			<div class="direct-trade-content">
 				<h2 class="section-title">DIRECT TRADE</h2>
 				<p class="section-text">
@@ -96,16 +106,6 @@
 					By visiting farms personally and cupping samples on-site, we ensure every bean meets 
 					our rigorous standards before it ever reaches your cup.
 				</p>
-			</div>
-			<div class="direct-trade-image">
-				<video
-					src="/bean-burlap.mp4"
-					autoplay
-					loop
-					muted
-					playsinline
-					class="section-video"
-				></video>
 			</div>
 		</div>
 	</section>
@@ -185,14 +185,14 @@
 		position: relative;
 		width: 100%;
 		background: #171717;
-		min-height: 100vh;
+		min-height: 100dvh;
 	}
 
 	/* Hero Section */
 	.hero-section {
 		position: relative;
 		width: 100%;
-		height: 100vh;
+		height: 100dvh;
 		overflow: hidden;
 		display: flex;
 		align-items: center;
@@ -257,17 +257,47 @@
 	.direct-trade-section {
 		position: relative;
 		width: 100%;
-		padding: 8rem 2rem;
+		padding: 4rem 1rem;
 		background: #171717;
+	}
+
+	@media (min-width: 768px) {
+		.direct-trade-section {
+			padding: 6rem 2rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.direct-trade-section {
+			padding: 8rem 2rem;
+		}
 	}
 
 	.direct-trade-container {
 		max-width: 1400px;
 		margin: 0 auto;
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 4rem;
-		align-items: center;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		align-items: stretch;
+	}
+
+	@media (min-width: 1024px) {
+		.direct-trade-container {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 4rem;
+			align-items: center;
+		}
+
+		/* Reorder on desktop: content first, video second */
+		.direct-trade-content {
+			order: 1;
+		}
+
+		.direct-trade-image {
+			order: 2;
+		}
 	}
 
 	.direct-trade-content {
@@ -288,8 +318,20 @@
 	.regions-section {
 		position: relative;
 		width: 100%;
-		padding: 8rem 2rem;
+		padding: 4rem 1rem;
 		background: #0f0f0f;
+	}
+
+	@media (min-width: 768px) {
+		.regions-section {
+			padding: 6rem 2rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.regions-section {
+			padding: 8rem 2rem;
+		}
 	}
 
 	.regions-container {
@@ -299,9 +341,16 @@
 
 	.regions-grid {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 3rem;
+		grid-template-columns: 1fr;
+		gap: 2rem;
 		margin-top: 4rem;
+	}
+
+	@media (min-width: 768px) {
+		.regions-grid {
+			grid-template-columns: repeat(2, 1fr);
+			gap: 3rem;
+		}
 	}
 
 	.region-card {
@@ -342,17 +391,38 @@
 	.quality-section {
 		position: relative;
 		width: 100%;
-		padding: 8rem 2rem;
+		padding: 4rem 1rem;
 		background: #171717;
+	}
+
+	@media (min-width: 768px) {
+		.quality-section {
+			padding: 6rem 2rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.quality-section {
+			padding: 8rem 2rem;
+		}
 	}
 
 	.quality-container {
 		max-width: 1400px;
 		margin: 0 auto;
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 4rem;
-		align-items: center;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		align-items: stretch;
+	}
+
+	@media (min-width: 1024px) {
+		.quality-container {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 4rem;
+			align-items: center;
+		}
 	}
 
 	.quality-image {

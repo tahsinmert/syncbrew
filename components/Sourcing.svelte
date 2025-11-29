@@ -93,7 +93,7 @@
 	.sourcing-section {
 		position: relative;
 		width: 100%;
-		min-height: 100vh;
+		min-height: 100dvh;
 		background: #2c2419; /* Deep warm brown / dark charcoal */
 		display: flex;
 		align-items: center;
@@ -130,8 +130,8 @@
 		position: relative;
 		width: 100%;
 		max-width: 400px;
-		height: 70vh;
-		max-height: 80vh;
+		height: 70dvh;
+		max-height: 80dvh;
 		z-index: 1;
 		aspect-ratio: 9 / 16;
 	}
@@ -149,7 +149,7 @@
 	@media (max-width: 1024px) {
 		.video-wrapper {
 			max-width: 350px;
-			height: 65vh;
+			height: 65dvh;
 		}
 
 		.headline-text {
@@ -165,7 +165,7 @@
 
 		.video-wrapper {
 			max-width: 280px;
-			height: 60vh;
+			height: 60dvh;
 		}
 
 		.headline-text {
@@ -188,7 +188,7 @@
 
 		.video-wrapper {
 			max-width: 240px;
-			height: 55vh;
+			height: 55dvh;
 		}
 
 		.headline-text {

@@ -84,7 +84,7 @@
 	.heritage-section {
 		position: relative;
 		width: 100%;
-		min-height: 100vh;
+		min-height: 100dvh;
 		background: #0a0a0a; /* Global dark background */
 		display: flex;
 		flex-direction: column;

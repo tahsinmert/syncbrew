@@ -184,14 +184,14 @@
 		position: relative;
 		width: 100%;
 		background: #171717;
-		min-height: 100vh;
+		min-height: 100dvh;
 	}
 
 	/* Hero Section */
 	.hero-section {
 		position: relative;
 		width: 100%;
-		height: 100vh;
+		height: 100dvh;
 		overflow: hidden;
 		display: flex;
 		align-items: center;
@@ -256,16 +256,36 @@
 	.contact-section {
 		position: relative;
 		width: 100%;
-		padding: 8rem 2rem;
+		padding: 4rem 1rem;
 		background: #171717;
+	}
+
+	@media (min-width: 768px) {
+		.contact-section {
+			padding: 6rem 2rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.contact-section {
+			padding: 8rem 2rem;
+		}
 	}
 
 	.contact-container {
 		max-width: 1400px;
 		margin: 0 auto;
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 6rem;
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+	}
+
+	@media (min-width: 1024px) {
+		.contact-container {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 6rem;
+		}
 	}
 
 	.contact-info {
@@ -411,10 +431,7 @@
 
 	/* Responsive */
 	@media (max-width: 1024px) {
-		.contact-container {
-			grid-template-columns: 1fr;
-			gap: 4rem;
-		}
+		/* Already flex-col by default */
 	}
 
 	@media (max-width: 768px) {
