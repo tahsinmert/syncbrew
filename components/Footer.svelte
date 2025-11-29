@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { magneticButton } from '../src/lib/magneticButton';
+	import { navigate } from '../src/stores/router';
 	
 	let email = '';
 	
@@ -9,6 +10,11 @@
 			console.log('Subscribing:', email);
 			email = '';
 		}
+	}
+
+	function handleLinkClick(event: MouseEvent, path: string) {
+		event.preventDefault();
+		navigate(path);
 	}
 </script>
 
@@ -39,9 +45,9 @@
 			<div class="footer-col">
 				<h4 class="footer-heading">Shop</h4>
 				<ul class="footer-links">
-					<li><a href="#beans">Beans</a></li>
-					<li><a href="#machines">Machines</a></li>
-					<li><a href="#merch">Merch</a></li>
+					<li><a href="/shop?category=beans" on:click={(e) => handleLinkClick(e, '/shop?category=beans')}>Beans</a></li>
+					<li><a href="/shop?category=equipment" on:click={(e) => handleLinkClick(e, '/shop?category=equipment')}>Machines</a></li>
+					<li><a href="/shop?category=merch" on:click={(e) => handleLinkClick(e, '/shop?category=merch')}>Merch</a></li>
 				</ul>
 			</div>
 			
@@ -49,9 +55,9 @@
 			<div class="footer-col">
 				<h4 class="footer-heading">Company</h4>
 				<ul class="footer-links">
-					<li><a href="#story">Our Story</a></li>
-					<li><a href="#sourcing">Sourcing</a></li>
-					<li><a href="#contact">Contact</a></li>
+					<li><a href="/story" on:click={(e) => handleLinkClick(e, '/story')}>Our Story</a></li>
+					<li><a href="/sourcing" on:click={(e) => handleLinkClick(e, '/sourcing')}>Sourcing</a></li>
+					<li><a href="/contact" on:click={(e) => handleLinkClick(e, '/contact')}>Contact</a></li>
 				</ul>
 			</div>
 			

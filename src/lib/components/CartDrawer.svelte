@@ -1,37 +1,24 @@
-<script>
-	import { isCartOpen, cartCount } from '../stores.js';
+<script lang="ts">
+	import { isCartOpen } from '../stores.js';
+	import { cart, cartCount } from '../../stores/cart';
 	import { fly, fade } from 'svelte/transition';
+	import { derived } from 'svelte/store';
 
 	function closeCart() {
 		isCartOpen.set(false);
 	}
 
-	// Mock cart items with the 3 specified items
-	const mockItems = [
-		{ 
-			id: 1, 
-			name: 'Ethiopian Yirgacheffe', 
-			variant: 'Whole Bean',
-			price: '$24.00', 
-			image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=200' 
-		},
-		{ 
-			id: 2, 
-			name: 'Glass Server', 
-			variant: '500ml',
-			price: '$28.00', 
-			image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=200' 
-		},
-		{ 
-			id: 3, 
-			name: 'Coffee Filters', 
-			variant: 'Pack of 100',
-			price: '$20.00', 
-			image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=200' 
-		}
-	];
+	function removeItem(id: number) {
+		cart.removeItem(id);
+	}
 
-	const subtotal = 72.00; // $24 + $28 + $20
+	// Calculate subtotal from cart items
+	const subtotal = derived(cart, ($cart) => {
+		return $cart.reduce((sum, item) => {
+			const price = parseFloat(item.price.replace('$', ''));
+			return sum + (price * item.quantity);
+		}, 0);
+	});
 </script>
 
 {#if $isCartOpen}
@@ -80,37 +67,47 @@
 
 				<!-- Product List -->
 				<div class="flex-1 overflow-y-auto p-8">
-					{#each mockItems as item}
-						<div class="bg-black/40 rounded-xl p-4 mb-4 border border-white/5">
-							<div class="flex flex-row gap-4">
-								<!-- Image -->
-								<img 
-									src={item.image} 
-									alt={item.name} 
-									class="w-20 h-20 rounded-lg object-cover flex-shrink-0"
-								/>
-								
-								<!-- Details -->
-								<div class="flex-1 flex flex-col justify-between min-w-0">
-									<div>
-										<h3 class="text-lg text-white font-serif mb-1">{item.name}</h3>
-										<p class="text-sm text-stone-400 mb-2">{item.variant}</p>
-										<button 
-											class="text-xs text-red-400 hover:text-red-300 underline"
-											on:click={() => { /* Handle remove */ }}
-										>
-											Remove
-										</button>
+					{#if $cart.length === 0}
+						<div class="flex flex-col items-center justify-center h-full text-center">
+							<p class="text-stone-400 text-lg mb-2">Your cart is empty</p>
+							<p class="text-stone-500 text-sm">Add some items to get started</p>
+						</div>
+					{:else}
+						{#each $cart as item}
+							<div class="bg-black/40 rounded-xl p-4 mb-4 border border-white/5">
+								<div class="flex flex-row gap-4">
+									<!-- Image -->
+									<img 
+										src={item.image} 
+										alt={item.name} 
+										class="w-20 h-20 rounded-lg object-cover flex-shrink-0"
+									/>
+									
+									<!-- Details -->
+									<div class="flex-1 flex flex-col justify-between min-w-0">
+										<div>
+											<h3 class="text-lg text-white font-serif mb-1">{item.name}</h3>
+											<p class="text-sm text-stone-400 mb-2">Quantity: {item.quantity}</p>
+											<button 
+												class="text-xs text-red-400 hover:text-red-300 underline"
+												on:click={() => removeItem(item.id)}
+											>
+												Remove
+											</button>
+										</div>
+									</div>
+
+									<!-- Price -->
+									<div class="flex flex-col items-end">
+										<span class="text-xl text-amber-400 font-mono">{item.price}</span>
+										{#if item.quantity > 1}
+											<span class="text-sm text-stone-500">× {item.quantity}</span>
+										{/if}
 									</div>
 								</div>
-
-								<!-- Price -->
-								<div class="flex items-start">
-									<span class="text-xl text-amber-400 font-mono">{item.price}</span>
-								</div>
 							</div>
-						</div>
-					{/each}
+						{/each}
+					{/if}
 				</div>
 
 				<!-- Footer -->
@@ -118,13 +115,14 @@
 					<!-- Total Row -->
 					<div class="flex justify-between items-center mb-6">
 						<span class="text-stone-400 uppercase tracking-wider text-lg">Total</span>
-						<span class="text-3xl text-white font-mono font-bold">${subtotal.toFixed(2)}</span>
+						<span class="text-3xl text-white font-mono font-bold">${$subtotal.toFixed(2)}</span>
 					</div>
 
 					<!-- Checkout Button -->
 					<button 
-						class="w-full bg-white text-black py-4 uppercase tracking-widest transition-transform hover:scale-[1.02] font-semibold text-lg"
+						class="w-full bg-white text-black py-4 uppercase tracking-widest transition-transform hover:scale-[1.02] font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed"
 						on:click={() => { /* Handle checkout */ }}
+						disabled={$cart.length === 0}
 					>
 						CHECKOUT NOW
 					</button>

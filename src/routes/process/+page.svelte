@@ -16,6 +16,9 @@
 	let roastCurvePath: SVGPathElement;
 	let roastCurveContainer: HTMLElement;
 	let bloomVideo: HTMLVideoElement;
+	let grindVideo: HTMLVideoElement;
+	let grindSectionContainer: HTMLElement;
+	let grindTextContainer: HTMLElement;
 
 	// Roast curve data points (temperature over time)
 	const roastCurvePoints = [
@@ -136,6 +139,46 @@
 					scrub: true
 				}
 			});
+		}
+
+		// Grind Video - Slide in from right
+		if (grindVideo && grindingSection) {
+			gsap.fromTo(
+				grindVideo,
+				{ x: 50, opacity: 0 },
+				{
+					x: 0,
+					opacity: 1,
+					duration: 1.2,
+					ease: 'power3.out',
+					scrollTrigger: {
+						trigger: grindingSection,
+						start: 'top 85%',
+						toggleActions: 'play none none none'
+					}
+				}
+			);
+		}
+
+		// Grind Text - Stagger from left
+		if (grindTextContainer && grindingSection) {
+			const textElements = grindTextContainer.querySelectorAll('.grind-header, .grind-subhead, .data-line');
+			gsap.fromTo(
+				textElements,
+				{ x: -50, opacity: 0 },
+				{
+					x: 0,
+					opacity: 1,
+					duration: 1,
+					ease: 'power3.out',
+					stagger: 0.15,
+					scrollTrigger: {
+						trigger: grindingSection,
+						start: 'top 85%',
+						toggleActions: 'play none none none'
+					}
+				}
+			);
 		}
 
 		// Bloom Video - Scale and Parallax
@@ -352,45 +395,40 @@
 		</div>
 	</section>
 
-	<!-- Step 2: Grinding -->
-	<section class="step-section" bind:this={grindingSection}>
-		<div class="step-container">
-			<div class="step-number">02</div>
-			<div class="step-content">
-				<h2 class="step-title">GRINDING</h2>
-				<p class="step-description">
-					Precision is everything. The grind size determines extraction rate. Too fine, and you over-extract. 
-					Too coarse, and you under-extract. We measure in microns—each particle size calibrated for the perfect 
-					brew method.
-				</p>
-				<div class="technical-data">
-					<div class="data-item">
-						<span class="data-label">PARTICLE SIZE:</span>
-						<span class="data-value">400-600 ΜM</span>
-					</div>
-					<div class="data-item">
-						<span class="data-label">GRIND CONSISTENCY:</span>
-						<span class="data-value">±5% VARIANCE</span>
-					</div>
-					<div class="data-item">
-						<span class="data-label">BURRS:</span>
-						<span class="data-value">64MM STEEL</span>
-					</div>
-				</div>
-				<div class="blueprint-box">
-					<div class="blueprint-grid"></div>
-					<div class="blueprint-content">
-						<div class="blueprint-line horizontal" style="top: 30%"></div>
-						<div class="blueprint-line horizontal" style="top: 50%"></div>
-						<div class="blueprint-line horizontal" style="top: 70%"></div>
-						<div class="blueprint-line vertical" style="left: 30%"></div>
-						<div class="blueprint-line vertical" style="left: 50%"></div>
-						<div class="blueprint-line vertical" style="left: 70%"></div>
-						<div class="blueprint-text">
-							<span class="blueprint-label">GRIND DISTRIBUTION</span>
-							<span class="blueprint-value">UNIFORM</span>
+	<!-- Step 2: The Grind -->
+	<section class="grind-section" bind:this={grindingSection}>
+		<div class="grind-container max-w-7xl" bind:this={grindSectionContainer}>
+			<div class="grind-grid">
+				<!-- Text Left -->
+				<div class="grind-text-content" bind:this={grindTextContainer}>
+					<h2 class="grind-header">UNIFORMITY</h2>
+					<p class="grind-subhead">Precision Burr Geometry.</p>
+					<div class="grind-data-block">
+						<div class="data-line">
+							<span class="data-label">TARGET:</span>
+							<span class="data-value-amber">20g</span>
+						</div>
+						<div class="data-line">
+							<span class="data-label">SIZE:</span>
+							<span class="data-value-amber">300 Microns</span>
+						</div>
+						<div class="data-line">
+							<span class="data-label">RESULT:</span>
+							<span class="data-value-amber">Sweetness</span>
 						</div>
 					</div>
+				</div>
+				<!-- Video Right -->
+				<div class="grind-video-container">
+					<video
+						bind:this={grindVideo}
+						src="/ground-texture.mp4"
+						autoplay
+						loop
+						muted
+						playsinline
+						class="grind-video"
+					></video>
 				</div>
 			</div>
 		</div>
@@ -694,6 +732,100 @@
 		filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.5));
 	}
 
+	/* Step 2: The Grind Section */
+	.grind-section {
+		position: relative;
+		width: 100%;
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 6rem 2rem;
+		background: #171717;
+	}
+
+	.grind-container {
+		width: 100%;
+		max-width: 80rem; /* max-w-7xl equivalent */
+		margin: 0 auto;
+	}
+
+	.grind-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 4rem;
+		align-items: center;
+	}
+
+	.grind-text-content {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+
+	.grind-header {
+		font-family: 'Monospace', 'Courier New', monospace;
+		font-size: clamp(2rem, 4vw, 3.5rem);
+		font-weight: 700;
+		color: #ffffff;
+		text-transform: uppercase;
+		letter-spacing: 0.15em;
+		margin: 0;
+		line-height: 1.2;
+	}
+
+	.grind-subhead {
+		font-family: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
+		font-size: clamp(1.125rem, 1.75vw, 1.5rem);
+		font-weight: 400;
+		color: rgba(255, 255, 255, 0.7);
+		margin: 0;
+		font-style: italic;
+	}
+
+	.grind-data-block {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		margin-top: 1rem;
+		padding: 1.5rem;
+		border: 1px solid rgba(255, 255, 255, 0.05);
+		background: rgba(0, 0, 0, 0.2);
+	}
+
+	.data-line {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-family: 'Monospace', 'Courier New', monospace;
+		font-size: clamp(0.875rem, 1.25vw, 1rem);
+	}
+
+	.data-line .data-label {
+		color: rgba(255, 255, 255, 0.5);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+	}
+
+	.data-value-amber {
+		color: #f59e0b;
+		font-weight: 600;
+	}
+
+	.grind-video-container {
+		position: relative;
+		width: 100%;
+	}
+
+	.grind-video {
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+		border-radius: 0.125rem;
+		border: 1px solid rgba(255, 255, 255, 0.05);
+		box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+	}
+
 	/* Blueprint Box */
 	.blueprint-box {
 		margin-top: 3rem;
@@ -863,6 +995,14 @@
 		.technical-data-grid {
 			grid-template-columns: 1fr;
 		}
+
+		.grind-grid {
+			gap: 3rem;
+		}
+
+		.grind-section {
+			padding: 4rem 2rem;
+		}
 	}
 
 	@media (max-width: 768px) {
@@ -885,6 +1025,19 @@
 
 		.blueprint-box {
 			height: 300px;
+		}
+
+		.grind-grid {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+
+		.grind-section {
+			padding: 3rem 1.5rem;
+		}
+
+		.grind-video {
+			aspect-ratio: 4 / 3;
 		}
 	}
 
@@ -910,6 +1063,19 @@
 			flex-direction: column;
 			align-items: flex-start;
 			gap: 0.5rem;
+		}
+
+		.grind-section {
+			padding: 2rem 1rem;
+			min-height: auto;
+		}
+
+		.grind-text-content {
+			gap: 1.5rem;
+		}
+
+		.grind-data-block {
+			padding: 1rem;
 		}
 	}
 </style>

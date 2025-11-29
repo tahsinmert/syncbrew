@@ -18,6 +18,10 @@
 	import TheRitual from '../../components/TheRitual.svelte';
 	import TheBloom from '../../components/TheBloom.svelte';
 	import Footer from '../../components/Footer.svelte';
+	import FloatingParticles from '../lib/components/FloatingParticles.svelte';
+	import AnimatedGradient from '../lib/components/AnimatedGradient.svelte';
+	import CursorTrail from '../lib/components/CursorTrail.svelte';
+	import { initSmoothScroll } from '../lib/utils/smoothScroll';
 
 	gsap.registerPlugin(ScrollTrigger);
 
@@ -173,6 +177,9 @@
 			});
 		}
 
+		// Initialize smooth scroll
+		initSmoothScroll();
+
 		return () => {
 			ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 		};
@@ -181,6 +188,9 @@
 
 <div class="app-container" bind:this={appContainer}>
 	<VideoBackground />
+	<AnimatedGradient />
+	<FloatingParticles />
+	<CursorTrail />
 	<div class="noise-texture"></div>
 	<Hero />
 	<BeanStory />

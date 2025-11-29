@@ -3,6 +3,8 @@
 	import PageTransition from '../lib/components/PageTransition.svelte';
 	import Preloader from '../lib/components/Preloader.svelte';
 	import { preloaderComplete } from '../lib/stores.js';
+	import { isTransitioning } from '../stores/router';
+	import { initSmoothScroll } from '../lib/utils/smoothScroll';
 
 	let contentVisible = false;
 
@@ -30,6 +32,11 @@
 				document.body.style.overflow = '';
 			};
 		}
+		
+		// Initialize smooth scroll after a delay
+		setTimeout(() => {
+			initSmoothScroll();
+		}, 1000);
 	});
 </script>
 
@@ -39,7 +46,9 @@
 <!-- Main content - hidden until preloader completes -->
 <div class="main-content" class:visible={contentVisible}>
 	<PageTransition />
-	<slot />
+	<div class="page-content" class:hidden={$isTransitioning}>
+		<slot />
+	</div>
 </div>
 
 <style>
@@ -52,6 +61,17 @@
 	.main-content.visible {
 		opacity: 1;
 		visibility: visible;
+	}
+
+	.page-content {
+		opacity: 1;
+		visibility: visible;
+		transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+	}
+
+	.page-content.hidden {
+		opacity: 0;
+		visibility: hidden;
 	}
 </style>
 

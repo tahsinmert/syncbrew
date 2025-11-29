@@ -27,6 +27,16 @@ function createCartStore() {
 		removeItem: (id: number) => {
 			update((items) => items.filter((item) => item.id !== id));
 		},
+		updateQuantity: (id: number, quantity: number) => {
+			update((items) => {
+				if (quantity <= 0) {
+					return items.filter((item) => item.id !== id);
+				}
+				return items.map((item) =>
+					item.id === id ? { ...item, quantity } : item
+				);
+			});
+		},
 		clear: () => set([])
 	};
 }

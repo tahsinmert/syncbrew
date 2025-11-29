@@ -8,6 +8,9 @@
 	import Subscription from '../../../components/Subscription.svelte';
 	import ShopTestimonial from '../../../components/ShopTestimonial.svelte';
 	import { cart } from '../../stores/cart';
+	import { currentRoute } from '../../stores/router';
+	import { createRipple } from '../../lib/utils/rippleEffect';
+	import { imageReveal } from '../../lib/utils/imageReveal';
 
 	gsap.registerPlugin(ScrollTrigger);
 
@@ -151,7 +154,10 @@
 		return products.filter((p) => p.category === selectedCategory);
 	}
 
-	function handleAddToCart(product: Product) {
+	function handleAddToCart(product: Product, event: MouseEvent) {
+		const button = event.currentTarget as HTMLElement;
+		if (button) createRipple(event, button);
+		
 		cart.addItem({
 			id: product.id,
 			name: product.name,
@@ -208,6 +214,17 @@
 	}
 
 	onMount(() => {
+		// Check URL for category query parameter
+		if (typeof window !== 'undefined') {
+			const urlParams = new URLSearchParams(window.location.search);
+			const categoryParam = urlParams.get('category');
+			if (categoryParam === 'beans' || categoryParam === 'equipment' || categoryParam === 'merch') {
+				selectedCategory = categoryParam;
+			} else if (categoryParam === 'machines') {
+				selectedCategory = 'equipment';
+			}
+		}
+
 		// 1. Typography Reveal (Headings h1, h2)
 		const headings = document.querySelectorAll('.page-container h1, .page-container h2');
 		headings.forEach((heading) => {
@@ -248,9 +265,10 @@
 			);
 		});
 
-		// 3. Images & Videos (Parallax & Scale)
-		const images = document.querySelectorAll('.page-container img');
+		// 3. Images & Videos (Parallax & Scale & Reveal)
+		const images = document.querySelectorAll('.page-container .product-image img');
 		images.forEach((img) => {
+			// Scale effect
 			gsap.fromTo(
 				img,
 				{ scale: 1.1 },
@@ -265,6 +283,9 @@
 					}
 				}
 			);
+			
+			// Image reveal effect
+			imageReveal(img as HTMLElement, { direction: 'left', duration: 1.2 });
 		});
 
 		// 4. Grids & Lists (Staggered Entry)
@@ -369,7 +390,7 @@
 									<span class="product-price">{product.price}</span>
 									<button
 										class="add-to-cart-btn"
-										onclick={() => handleAddToCart(product)}
+										onclick={(e) => handleAddToCart(product, e)}
 									>
 										Add to Cart
 									</button>
@@ -673,6 +694,15 @@
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
 			Cantarell, sans-serif;
 		animation: slideInRight 0.3s ease;
+	}
+
+	:global(.ripple-effect) {
+		position: absolute;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.6);
+		transform: translate(-50%, -50%);
+		pointer-events: none;
+		z-index: 10;
 	}
 
 	@keyframes slideInRight {

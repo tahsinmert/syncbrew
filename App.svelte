@@ -5,6 +5,10 @@
 	import ProcessPage from './src/routes/process/+page.svelte';
 	import ShopPage from './src/routes/shop/+page.svelte';
 	import ReservationPage from './src/routes/reservation/+page.svelte';
+	import CartPage from './src/routes/cart/+page.svelte';
+	import StoryPage from './src/routes/story/+page.svelte';
+	import SourcingPage from './src/routes/sourcing/+page.svelte';
+	import ContactPage from './src/routes/contact/+page.svelte';
 	import { currentRoute, initRouter } from './src/stores/router';
 	import PageTransition from './src/lib/components/PageTransition.svelte';
 	import Preloader from './src/lib/components/Preloader.svelte';
@@ -57,10 +61,18 @@
 		<OriginPage />
 	{:else if $currentRoute === '/process'}
 		<ProcessPage />
-	{:else if $currentRoute === '/shop'}
+	{:else if $currentRoute.startsWith('/shop')}
 		<ShopPage />
 	{:else if $currentRoute === '/reservation'}
 		<ReservationPage />
+	{:else if $currentRoute === '/cart'}
+		<CartPage />
+	{:else if $currentRoute === '/story'}
+		<StoryPage />
+	{:else if $currentRoute === '/sourcing'}
+		<SourcingPage />
+	{:else if $currentRoute === '/contact'}
+		<ContactPage />
 	{:else}
 		<HomePage />
 	{/if}

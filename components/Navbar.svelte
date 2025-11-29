@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { isCartOpen, isSearchOpen, cartCount } from '../src/lib/stores.js';
+	import { isSearchOpen, cartCount } from '../src/lib/stores.js';
 	import { navigate } from '../src/stores/router';
 	import SearchOverlay from '../src/lib/components/SearchOverlay.svelte';
-	import CartDrawer from '../src/lib/components/CartDrawer.svelte';
 	import { magneticButton } from '../src/lib/magneticButton';
+	import { createRipple } from '../src/lib/utils/rippleEffect';
 
 	let scrolled = false;
 	let mobileMenuOpen = false;
@@ -60,7 +60,8 @@
 	<div class="navbar-container">
 		<!-- Left: Brand Logo -->
 		<a href="/" class="brand-logo" data-sveltekit-preload-data="hover" on:click={(e) => { e.preventDefault(); closeMobileMenu(); navigate('/'); }}>
-			SYNCBREW
+			<img src="/syncbrew-logo.png" alt="SyncBrew Logo" class="brand-logo-image" />
+			<span class="brand-logo-text">SYNCBREW</span>
 		</a>
 
 		<!-- Center: Navigation Links (Desktop) -->
@@ -81,13 +82,13 @@
 
 		<!-- Right: Icons & Actions -->
 		<div class="navbar-actions">
-			<button class="icon-button" aria-label="Search" on:click={() => isSearchOpen.set(true)}>
+			<button class="icon-button" aria-label="Search" on:click={(e) => { createRipple(e, e.currentTarget as HTMLElement); isSearchOpen.set(true); }}>
 				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 					<circle cx="11" cy="11" r="8"></circle>
 					<path d="m21 21-4.35-4.35"></path>
 				</svg>
 			</button>
-			<button class="icon-button cart-button" aria-label="Cart" on:click={() => isCartOpen.set(true)}>
+			<a href="/cart" class="icon-button cart-button" aria-label="Cart" on:click={(e) => { e.preventDefault(); navigate('/cart'); }}>
 				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 					<circle cx="9" cy="21" r="1"></circle>
 					<circle cx="20" cy="21" r="1"></circle>
@@ -96,7 +97,7 @@
 				{#if $cartCount > 0}
 					<span class="cart-badge">{$cartCount}</span>
 				{/if}
-			</button>
+			</a>
 			<a href="/reservation" class="book-table-btn" use:magneticButton data-sveltekit-preload-data="hover" on:click={(e) => { e.preventDefault(); closeMobileMenu(); navigate('/reservation'); }}>Book Table</a>
 			<!-- Mobile Menu Toggle -->
 			<button
@@ -139,9 +140,6 @@
 
 	<!-- Search Overlay -->
 	<SearchOverlay />
-
-	<!-- Cart Drawer -->
-	<CartDrawer />
 </nav>
 
 <style>
@@ -178,21 +176,41 @@
 
 	/* Brand Logo */
 	.brand-logo {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		text-decoration: none;
+		transition: all 0.3s ease;
+	}
+
+	.brand-logo-image {
+		height: 40px;
+		width: auto;
+		filter: brightness(0) invert(1);
+		transition: opacity 0.3s ease;
+	}
+
+	.brand-logo:hover .brand-logo-image {
+		opacity: 0.8;
+	}
+
+	.brand-logo-text {
 		font-family: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
 		font-size: 1.5rem;
 		font-weight: 700;
 		color: #ffffff;
-		text-decoration: none;
 		letter-spacing: 0.1em;
 		text-transform: uppercase;
 		white-space: nowrap;
-		transition: all 0.3s ease;
 		text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 	}
 
 	.brand-logo:hover {
-		opacity: 0.9;
 		transform: translateY(-1px);
+	}
+
+	.brand-logo:hover .brand-logo-text {
+		opacity: 0.9;
 	}
 
 	/* Desktop Navigation Links */
@@ -487,8 +505,12 @@
 			padding: 0.875rem 1rem;
 		}
 
-		.brand-logo {
+		.brand-logo-text {
 			font-size: 1.25rem;
+		}
+
+		.brand-logo-image {
+			height: 32px;
 		}
 
 		.mobile-nav-link {

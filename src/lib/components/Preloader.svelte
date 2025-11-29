@@ -7,7 +7,9 @@
 	let curtainBottom: HTMLElement;
 	let counterElement: HTMLElement;
 	let statusText: HTMLElement;
-	let logoElement: HTMLElement;
+	let logoImageElement: HTMLElement;
+	let logoTextElement: HTMLElement;
+	let logoWrapper: HTMLElement;
 	let contentContainer: HTMLElement;
 
 	let counter = 0;
@@ -38,7 +40,7 @@
 			}
 
 			// Ensure all elements exist before animating
-			if (!curtainTop || !curtainBottom || !counterElement || !logoElement || !contentContainer) {
+			if (!curtainTop || !curtainBottom || !counterElement || !logoImageElement || !logoTextElement || !logoWrapper || !contentContainer) {
 				console.warn('Preloader elements not found');
 				preloaderComplete.set(true);
 				return;
@@ -51,7 +53,8 @@
 
 			// Set initial states
 			gsap.set(counterElement, { opacity: 1 });
-			gsap.set(logoElement, { opacity: 0, scale: 0.8 });
+			gsap.set(logoImageElement, { opacity: 0, scale: 0.8 });
+			gsap.set(logoTextElement, { opacity: 0 });
 			gsap.set([curtainTop, curtainBottom], { y: 0 });
 
 			// Create main timeline
@@ -73,21 +76,29 @@
 				}
 			});
 
-			// Step 2: Fade out counter, fade in logo
+			// Step 2: Fade out counter
 			tl.to(counterElement, {
 				opacity: 0,
 				duration: 0.3,
 				ease: 'power2.in'
 			}, '-=0.3');
 			
-			tl.to(logoElement, {
+			// Step 3: Logo icon animation - scale from 0.8 to 1.2 and fade in
+			tl.to(logoImageElement, {
 				opacity: 1,
-				scale: 1,
-				duration: 0.5,
+				scale: 1.2,
+				duration: 0.6,
 				ease: 'power2.out'
 			}, '-=0.2');
+			
+			// Step 4: Text fades in slightly after the logo
+			tl.to(logoTextElement, {
+				opacity: 1,
+				duration: 0.5,
+				ease: 'power2.out'
+			}, '-=0.3');
 
-			// Step 3: The reveal - curtains open
+			// Step 5: The reveal - curtains open
 			tl.to(curtainTop, {
 				y: '-100%',
 				duration: 1.2,
@@ -100,7 +111,7 @@
 				ease: 'power4.inOut'
 			}, '-=1.2');
 
-			tl.to(logoElement, {
+			tl.to([logoImageElement, logoTextElement], {
 				scale: 1.1,
 				opacity: 0,
 				duration: 1.2,
@@ -146,8 +157,9 @@
 	</div>
 
 	<!-- Logo -->
-	<div class="logo-wrapper" bind:this={logoElement}>
-		<div class="logo">SYNCBREW</div>
+	<div class="logo-wrapper" bind:this={logoWrapper}>
+		<img src="/syncbrew-logo.png" alt="SyncBrew Logo" class="logo-image" bind:this={logoImageElement} />
+		<div class="logo-text" bind:this={logoTextElement}>SYNCBREW</div>
 	</div>
 </div>
 
@@ -211,11 +223,20 @@
 
 	.logo-wrapper {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		gap: 1rem;
 	}
 
-	.logo {
+	.logo-image {
+		width: 6rem;
+		height: 6rem;
+		filter: brightness(0) invert(1);
+		object-fit: contain;
+	}
+
+	.logo-text {
 		font-size: 4rem;
 		font-family: 'Times New Roman', Times, serif;
 		font-weight: 400;
@@ -229,7 +250,12 @@
 			font-size: 4rem;
 		}
 
-		.logo {
+		.logo-image {
+			width: 4rem;
+			height: 4rem;
+		}
+
+		.logo-text {
 			font-size: 2.5rem;
 		}
 
